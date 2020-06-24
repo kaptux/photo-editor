@@ -1,19 +1,10 @@
 <template>
-  <div
-    class="loader"
-    @change="change"
-    @dragover="dragover"
-    @drop="drop"
-  >
+  <div class="photo-editor-loader" @change="change" @dragover="dragover" @drop="drop">
     <p>
       Drop image here or
-      <label class="browse">browse...
-        <input
-          id="file"
-          class="sr-only"
-          type="file"
-          accept="image/*"
-        >
+      <label class="photo-editor-browse">
+        browse...
+        <input id="file" class="photo-editor-sr-only" type="file" accept="image/*" />
       </label>
     </p>
   </div>
@@ -23,13 +14,13 @@
 const URL = window.URL || window.webkitURL;
 
 export default {
-  name: 'Loader',
+  name: "Loader",
 
   props: {
     data: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
 
   methods: {
@@ -48,25 +39,27 @@ export default {
               loaded: true,
               name: file.name,
               type: file.type,
-              url: URL.createObjectURL(file),
+              url: URL.createObjectURL(file)
             });
           } else {
-            reject(new Error('Your browser is not supported.'));
+            reject(new Error("Your browser is not supported."));
           }
         } else {
-          reject(new Error('Please choose an image file.'));
+          reject(new Error("Please choose an image file."));
         }
       });
     },
 
     change({ target }) {
-      this.read(target.files).then((data) => {
-        target.value = '';
-        this.update(data);
-      }).catch((e) => {
-        target.value = '';
-        this.alert(e);
-      });
+      this.read(target.files)
+        .then(data => {
+          target.value = "";
+          this.update(data);
+        })
+        .catch(e => {
+          target.value = "";
+          this.alert(e);
+        });
     },
 
     dragover(e) {
@@ -76,7 +69,7 @@ export default {
     drop(e) {
       e.preventDefault();
       this.read(e.dataTransfer.files)
-        .then((data) => {
+        .then(data => {
           this.update(data);
         })
         .catch(this.alert);
@@ -88,13 +81,13 @@ export default {
 
     update(data) {
       Object.assign(this.data, data);
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
-.loader {
+.photo-editor-loader {
   display: table;
   height: 100%;
   overflow: hidden;
@@ -108,10 +101,21 @@ export default {
   }
 }
 
-.browse {
+.photo-editor-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.photo-editor-browse {
   color: #0074d9;
   cursor: pointer;
-  margin-left: .25rem;
+  margin-left: 0.25rem;
 
   &:hover {
     color: #08f;

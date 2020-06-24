@@ -1,20 +1,10 @@
 <template>
-  <div class="navbar">
-    <nav
-      class="nav"
-      @click="click"
-    >
-      <label
-        v-if="!data.loaded"
-        class="nav__button"
-        for="file"
-        title="Upload"
-        role="button"
-      ><span class="fa fa-upload" /></label>
+  <div class="photo-editor-navbar">
+    <nav class="photo-editor-nav" @click="click">
       <button
         v-if="data.cropped"
         type="button"
-        class="nav__button"
+        class="photo-editor-nav__button"
         data-action="restore"
         title="Undo (Ctrl + Z)"
       >
@@ -23,7 +13,7 @@
       <button
         v-if="data.loaded && !data.cropping"
         type="button"
-        class="nav__button nav__button--danger"
+        class="photo-editor-nav__button nav__button--danger"
         data-action="remove"
         title="Delete (Delete)"
       >
@@ -32,72 +22,62 @@
       <button
         v-if="data.cropping"
         type="button"
-        class="nav__button nav__button--danger"
+        class="photo-editor-nav__button nav__button--danger"
         data-action="clear"
         title="Cancel (Esc)"
       >
         <span class="fa fa-ban" />
       </button>
       <button
-        v-if="data.cropping"
+        v-if="data.loaded"
         type="button"
-        class="nav__button nav__button--success"
+        class="photo-editor-nav__button nav__button--success"
         data-action="crop"
         title="OK (Enter)"
       >
         <span class="fa fa-check" />
       </button>
-      <a
-        v-if="downloadable && data.loaded"
-        class="nav__button nav__button--success"
-        title="Download"
-        :download="data.name"
-        :href="data.url"
-      ><span class="fa fa-download" /></a>
-      <a
-        class="nav__button"
-        href="https://github.com/fengyuanchen/photo-editor"
-        title="View on GitHub"
-      ><span class="fa fa-github" /></a>
     </nav>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Navbar',
+  name: "Navbar",
 
   props: {
     data: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
 
   data() {
     return {
-      downloadable: typeof document.createElement('a').download !== 'undefined',
+      downloadable: typeof document.createElement("a").download !== "undefined"
     };
   },
 
   methods: {
     click({ target }) {
-      const action = target.getAttribute('data-action') || target.parentElement.getAttribute('data-action');
+      const action =
+        target.getAttribute("data-action") ||
+        target.parentElement.getAttribute("data-action");
 
       if (action) {
-        this.$emit('change', action);
+        this.$emit("change", action);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
-.navbar {
+.photo-editor-navbar {
   float: right;
 }
 
-.nav__button {
+.photo-editor-nav__button {
   background-color: transparent;
   border-width: 0;
   color: #fff;
@@ -119,11 +99,11 @@ export default {
   }
 }
 
-.nav--success:hover {
+.photo-editor-nav--success:hover {
   background-color: #2ecc40;
 }
 
-.nav--danger:hover {
+.photo-editor-nav--danger:hover {
   background-color: #ff4136;
 }
 </style>

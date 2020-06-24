@@ -1,73 +1,44 @@
 <template>
-  <div class="editor">
-    <div
-      class="canvas"
-      @dblclick="dblclick"
-    >
-      <img
-        ref="image"
-        :alt="data.name"
-        :src="data.url"
-        @loadstart="start"
-        @load="start"
-      >
+  <div class="photo-editor-editor">
+    <div class="photo-editor-canvas" @dblclick="dblclick">
+      <img ref="image" :alt="data.name" :src="data.url" @loadstart="start" @load="start" />
     </div>
-    <div
-      v-if="cropper"
-      class="toolbar"
-      @click="click"
-    >
-      <button
-        class="toolbar__button"
-        data-action="move"
-        title="Move (M)"
-      >
+    <div v-if="cropper" class="photo-editor-toolbar" @click="click">
+      <button class="photo-editor-toolbar__button" data-action="move" title="Move (M)">
         <span class="fa fa-arrows" />
       </button>
-      <button
-        class="toolbar__button"
-        data-action="crop"
-        title="Crop (C)"
-      >
+      <button class="photo-editor-toolbar__button" data-action="crop" title="Crop (C)">
         <span class="fa fa-crop" />
       </button>
-      <button
-        class="toolbar__button"
-        data-action="zoom-in"
-        title="Zoom In (I)"
-      >
+      <button class="photo-editor-toolbar__button" data-action="zoom-in" title="Zoom In (I)">
         <span class="fa fa-search-plus" />
       </button>
-      <button
-        class="toolbar__button"
-        data-action="zoom-out"
-        title="Zoom Out (O)"
-      >
+      <button class="photo-editor-toolbar__button" data-action="zoom-out" title="Zoom Out (O)">
         <span class="fa fa-search-minus" />
       </button>
       <button
-        class="toolbar__button"
+        class="photo-editor-toolbar__button"
         data-action="rotate-left"
         title="Rotate Left (L)"
       >
         <span class="fa fa-rotate-left" />
       </button>
       <button
-        class="toolbar__button"
+        class="photo-editor-toolbar__button"
         data-action="rotate-right"
         title="Rotate Right (R)"
       >
         <span class="fa fa-rotate-right" />
       </button>
       <button
-        class="toolbar__button"
+        class="photo-editor-toolbar__button"
         data-action="flip-horizontal"
         title="Flip Horizontal (H)"
       >
         <span class="fa fa-arrows-h" />
       </button>
       <button
-        class="toolbar__button"
+        class="photo-editor-toolbar__button"
         data-action="flip-vertical"
         title="Flip Vertical (V)"
       >
@@ -78,16 +49,16 @@
 </template>
 
 <script>
-import Cropper from 'cropperjs';
+import Cropper from "cropperjs";
 
 export default {
-  name: 'Editor',
+  name: "Editor",
 
   props: {
     data: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
 
   data() {
@@ -95,51 +66,56 @@ export default {
       canvasData: null,
       cropBoxData: null,
       croppedData: null,
-      cropper: null,
+      cropper: null
     };
   },
 
   mounted() {
-    window.addEventListener('keydown', (this.onKeydown = this.keydown.bind(this)));
+    // window.addEventListener(
+    //   "keydown",
+    //   (this.onKeydown = this.keydown.bind(this))
+    // );
   },
 
   beforeDestroy() {
-    window.removeEventListener('keydown', this.onKeydown);
+    window.removeEventListener("keydown", this.onKeydown);
     this.stop();
   },
 
   methods: {
     click({ target }) {
       const { cropper } = this;
-      const action = target.getAttribute('data-action') || target.parentElement.getAttribute('data-action');
+      const action =
+        target.getAttribute("data-action") ||
+        target.parentElement.getAttribute("data-action");
 
       switch (action) {
-        case 'move':
-        case 'crop':
+        case "move":
+        case "crop":
           cropper.setDragMode(action);
           break;
 
-        case 'zoom-in':
+        case "zoom-in":
           cropper.zoom(0.1);
           break;
 
-        case 'zoom-out':
+        case "zoom-out":
           cropper.zoom(-0.1);
           break;
 
-        case 'rotate-left':
+        case "rotate-left":
           cropper.rotate(-90);
           break;
 
-        case 'rotate-right':
+        case "rotate-right":
           cropper.rotate(90);
           break;
 
-        case 'flip-horizontal':
+        case "flip-horizontal":
           cropper.scaleX(-cropper.getData().scaleX || -1);
           break;
 
-        case 'flip-vertical':
+        case "flip-vertical":
           cropper.scaleY(-cropper.getData().scaleY || -1);
           break;
 
@@ -150,7 +126,7 @@ export default {
     keydown(e) {
       switch (e.key) {
         // Undo crop
-        case 'z':
+        case "z":
           if (e.ctrlKey) {
             e.preventDefault();
             this.restore();
@@ -158,8 +134,8 @@ export default {
 
           break;
 
-          // Delete the image
-        case 'Delete':
+        // Delete the image
+        case "Delete":
           this.reset();
           break;
 
@@ -174,76 +150,76 @@ export default {
 
       switch (e.key) {
         // Crop the image
-        case 'Enter':
+        case "Enter":
           this.crop();
           break;
 
-          // Clear crop area
-        case 'Escape':
+        // Clear crop area
+        case "Escape":
           this.clear();
           break;
 
-          // Move to the left
-        case 'ArrowLeft':
+        // Move to the left
+        case "ArrowLeft":
           e.preventDefault();
           cropper.move(-1, 0);
           break;
 
-          // Move to the top
-        case 'ArrowUp':
+        // Move to the top
+        case "ArrowUp":
           e.preventDefault();
           cropper.move(0, -1);
           break;
 
-          // Move to the right
-        case 'ArrowRight':
+        // Move to the right
+        case "ArrowRight":
           e.preventDefault();
           cropper.move(1, 0);
           break;
 
-          // Move to the bottom
-        case 'ArrowDown':
+        // Move to the bottom
+        case "ArrowDown":
           e.preventDefault();
           cropper.move(0, 1);
           break;
 
-          // Enter crop mode
-        case 'c':
-          cropper.setDragMode('crop');
+        // Enter crop mode
+        case "c":
+          cropper.setDragMode("crop");
           break;
 
-          // Enter move mode
-        case 'm':
-          cropper.setDragMode('move');
+        // Enter move mode
+        case "m":
+          cropper.setDragMode("move");
           break;
 
-          // Zoom in
-        case 'i':
+        // Zoom in
+        case "i":
           cropper.zoom(0.1);
           break;
 
-          // Zoom out
-        case 'o':
+        // Zoom out
+        case "o":
           cropper.zoom(-0.1);
           break;
 
-          // Rotate left
-        case 'l':
+        // Rotate left
+        case "l":
           cropper.rotate(-90);
           break;
 
-          // Rotate right
-        case 'r':
+        // Rotate right
+        case "r":
           cropper.rotate(90);
           break;
 
-          // Flip horizontal
-        case 'h':
+        // Flip horizontal
+        case "h":
           cropper.scaleX(-cropper.getData().scaleX || -1);
           break;
 
-          // Flip vertical
-        case 'v':
+        // Flip vertical
+        case "v":
           cropper.scaleY(-cropper.getData().scaleY || -1);
           break;
 
@@ -252,7 +228,7 @@ export default {
     },
 
     dblclick(e) {
-      if (e.target.className.indexOf('cropper-face') >= 0) {
+      if (e.target.className.indexOf("cropper-face") >= 0) {
         e.preventDefault();
         e.stopPropagation();
         this.crop();
@@ -268,7 +244,7 @@ export default {
 
       this.cropper = new Cropper(this.$refs.image, {
         autoCrop: false,
-        dragMode: 'move',
+        dragMode: "move",
         background: false,
 
         ready: () => {
@@ -288,10 +264,10 @@ export default {
         crop: ({ detail }) => {
           if (detail.width > 0 && detail.height > 0 && !data.cropping) {
             this.update({
-              cropping: true,
+              cropping: true
             });
           }
-        },
+        }
       });
     },
 
@@ -309,15 +285,15 @@ export default {
         this.croppedData = cropper.getData();
         this.canvasData = cropper.getCanvasData();
         this.cropBoxData = cropper.getCropBoxData();
-        this.update({
-          cropped: true,
-          cropping: false,
-          previousUrl: data.url,
-          url: cropper.getCroppedCanvas(data.type === 'image/png' ? {} : {
-            fillColor: '#fff',
-          }).toDataURL(data.type),
-        });
+        const croppedCanvas = cropper.getCroppedCanvas(
+          data.type === "image/png"
+            ? {}
+            : {
+                fillColor: "#fff"
+              }
+        );
         this.stop();
+        return croppedCanvas;
       }
     },
 
@@ -325,7 +301,7 @@ export default {
       if (this.data.cropping) {
         this.cropper.clear();
         this.update({
-          cropping: false,
+          cropping: false
         });
       }
     },
@@ -334,8 +310,8 @@ export default {
       if (this.data.cropped) {
         this.update({
           cropped: false,
-          previousUrl: '',
-          url: this.data.previousUrl,
+          previousUrl: "",
+          url: this.data.previousUrl
         });
       }
     },
@@ -346,26 +322,26 @@ export default {
         cropped: false,
         cropping: false,
         loaded: false,
-        name: '',
-        previousUrl: '',
-        type: '',
-        url: '',
+        name: "",
+        previousUrl: "",
+        type: "",
+        url: ""
       });
     },
 
     update(data) {
       Object.assign(this.data, data);
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
-.editor {
+.photo-editor-editor {
   height: 100%;
 }
 
-.canvas {
+.photo-editor-canvas {
   align-items: center;
   display: flex;
   height: 100%;
@@ -377,8 +353,8 @@ export default {
   }
 }
 
-.toolbar {
-  background-color: rgba(0, 0, 0, .5);
+.photo-editor-toolbar {
+  background-color: rgba(0, 0, 0, 0.5);
   bottom: 1rem;
   color: #fff;
   height: 2rem;
@@ -387,16 +363,17 @@ export default {
   position: absolute;
   width: 16rem;
   z-index: 2015;
+  border-radius: 4px;
 }
 
-.toolbar__button {
+.photo-editor-toolbar__button {
   background-color: transparent;
   border-width: 0;
   color: #fff;
   cursor: pointer;
   display: block;
   float: left;
-  font-size: .875rem;
+  font-size: 0.875rem;
   height: 2rem;
   text-align: center;
   width: 2rem;
@@ -405,9 +382,17 @@ export default {
     outline: none;
   }
 
+  &:hover:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
   &:hover {
     background-color: #0074d9;
     color: #fff;
+  }
+  &:hover:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
   }
 }
 </style>

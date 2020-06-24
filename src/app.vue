@@ -1,28 +1,18 @@
 <template>
-  <div class="app">
-    <header class="header">
-      <span class="title">Photo Editor</span>
-      <navbar
-        :data="data"
-        @change="change"
-      />
+  <div class="photo-editor-app">
+    <header class="photo-editor-header">
+      <span class="photo-editor-title">Photo Editor</span>
+      <navbar :data="data" @change="change" />
     </header>
-    <main class="main">
-      <editor
-        v-if="data.loaded"
-        ref="editor"
-        :data="data"
-      />
-      <loader
-        v-else
-        ref="loader"
-        :data="data"
-      />
+    <main class="photo-editor-main">
+      <editor v-if="data.loaded" ref="editor" :data="data" />
+      <loader v-else ref="loader" :data="data" />
     </main>
   </div>
 </template>
 
 <script>
+const noBinding = () => true;
 export default {
   data() {
     return {
@@ -30,44 +20,57 @@ export default {
         cropped: false,
         cropping: false,
         loaded: false,
-        name: '',
-        previousUrl: '',
-        type: '',
-        url: '',
+        name: "",
+        previousUrl: "",
+        type: "",
+        url: ""
       },
+      bindings: {}
     };
   },
 
   methods: {
+    bind(action, fn) {
+      this.bindings[action] = fn;
+    },
     change(action) {
       const { editor } = this.$refs;
+      const binding = this.bindings[action] || noBinding;
 
       switch (action) {
-        case 'crop':
-          editor.crop();
+        case "crop":
+          const canvas = editor.crop();
+          if (binding(canvas)) {
+            editor.update({
+              cropped: true,
+              cropping: false,
+              previousUrl: this.data.url,
+              url: canvas.toDataURL(this.data.type)
+            });
+          }
           break;
 
-        case 'clear':
+        case "clear":
           editor.clear();
           break;
 
-        case 'restore':
+        case "restore":
           editor.restore();
           break;
 
-        case 'remove':
+        case "remove":
           editor.reset();
           break;
 
         default:
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
-.app {
+.photo-editor-app {
   bottom: 0;
   left: 0;
   position: absolute;
@@ -75,7 +78,7 @@ export default {
   right: 0;
 }
 
-.header {
+.photo-editor-header {
   background-color: #666;
   height: 3rem;
   overflow: hidden;
@@ -86,13 +89,13 @@ export default {
 }
 
 @media (min-width: 768px) {
-  .header {
+  .photo-editor-header {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
 }
 
-.title {
+.photo-editor-title {
   color: #fff;
   display: block;
   float: left;
@@ -100,7 +103,7 @@ export default {
   line-height: 3rem;
 }
 
-.main {
+.photo-editor-main {
   background-color: #333;
   bottom: 0;
   left: 0;
