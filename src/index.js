@@ -47,4 +47,8 @@ Object.keys(options.bindings).forEach(k => {
 //     });
 //   });
 
+if (options.globalName) {
+  window[options.globalName] = component;
+}
+
 export default component;

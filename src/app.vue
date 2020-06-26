@@ -34,7 +34,10 @@ export default {
       this.bindings[action] = fn;
     },
     reset() {
-      editor.reset();
+      const { editor } = this.$refs;
+      if (editor) {
+        editor.reset();
+      }
     },
     setImage({ type, url }) {
       Object.assign(this.data, {
@@ -80,14 +83,6 @@ export default {
 </script>
 
 <style scoped>
-.photo-editor-app {
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
 .photo-editor-header {
   background-color: #666;
   height: 3rem;
