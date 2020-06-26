@@ -20,15 +20,6 @@
         <span class="fa fa-trash" />
       </button>
       <button
-        v-if="data.cropping"
-        type="button"
-        class="photo-editor-nav__button nav__button--danger"
-        data-action="clear"
-        title="Cancel (Esc)"
-      >
-        <span class="fa fa-ban" />
-      </button>
-      <button
         v-if="data.loaded"
         type="button"
         class="photo-editor-nav__button nav__button--success"

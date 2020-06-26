@@ -7,8 +7,8 @@
       <button class="photo-editor-toolbar__button" data-action="move" title="Move (M)">
         <span class="fa fa-arrows" />
       </button>
-      <button class="photo-editor-toolbar__button" data-action="crop" title="Crop (C)">
-        <span class="fa fa-crop" />
+      <button class="photo-editor-toolbar__button" data-action="expand" title="Crop (C)">
+        <span class="fa fa-expand" />
       </button>
       <button class="photo-editor-toolbar__button" data-action="zoom-in" title="Zoom In (I)">
         <span class="fa fa-search-plus" />
@@ -91,8 +91,10 @@ export default {
 
       switch (action) {
         case "move":
-        case "crop":
           cropper.setDragMode(action);
+          break;
+        case "expand":
+          cropper.reset();
           break;
 
         case "zoom-in":
@@ -243,9 +245,11 @@ export default {
       }
 
       this.cropper = new Cropper(this.$refs.image, {
-        autoCrop: false,
+        autoCrop: true,
+        autoCropArea: 1,
         dragMode: "move",
         background: false,
+        movable: false,
 
         ready: () => {
           if (this.croppedData) {

@@ -33,6 +33,16 @@ export default {
     bind(action, fn) {
       this.bindings[action] = fn;
     },
+    reset() {
+      editor.reset();
+    },
+    setImage({ type, url }) {
+      Object.assign(this.data, {
+        loaded: true,
+        type,
+        url
+      });
+    },
     change(action) {
       const { editor } = this.$refs;
       const binding = this.bindings[action] || noBinding;
