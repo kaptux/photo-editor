@@ -11,7 +11,7 @@
         <span class="fa fa-undo" />
       </button>
       <button
-        v-if="data.loaded && !data.cropping"
+        v-if="data.loaded"
         type="button"
         class="photo-editor-nav__button nav__button--danger"
         data-action="remove"
