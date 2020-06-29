@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       data: {
+        croppedData: null,
         cropped: false,
         cropping: false,
         loaded: false,
@@ -52,13 +53,14 @@ export default {
 
       switch (action) {
         case "crop":
-          const canvas = editor.crop();
-          if (binding(canvas)) {
+          const croppedInfo = editor.crop();
+          if (binding(croppedInfo)) {
+            const { croppedCanvas } = croppedInfo;
             editor.update({
               cropped: true,
               cropping: false,
               previousUrl: this.data.url,
-              url: canvas.toDataURL(this.data.type)
+              url: croppedCanvas.toDataURL(this.data.type)
             });
           }
           break;

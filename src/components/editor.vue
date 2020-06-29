@@ -297,7 +297,10 @@ export default {
               }
         );
         this.stop();
-        return croppedCanvas;
+        return {
+          ...this.croppedData,
+          croppedCanvas
+        };
       }
     },
 

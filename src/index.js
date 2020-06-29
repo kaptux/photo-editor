@@ -10,12 +10,7 @@ const imgURL =
 
 let options = {
   el: "#app",
-  bindings: {
-    crop() {
-      console.log("cropped");
-      return true;
-    }
-  }
+  bindings: {}
 };
 
 if (window.getPhotoEditorOptions) {
