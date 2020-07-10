@@ -1,5 +1,9 @@
 <template>
   <div class="photo-editor-loader" @change="change" @dragover="dragover" @drop="drop">
+    <div class="photo-galery">
+      <img src="https://firebasestorage.googleapis.com/v0/b/svgedito.appspot.com/o/-MB6M2KEqb9faqdVmsW4%2F-MB6N95HOCKsAeHuJddE.jpg?alt=media&token=cb583662-2e51-44bf-897b-90019ab7cee9" />
+      <img src="https://firebasestorage.googleapis.com/v0/b/svgedito.appspot.com/o/-MB6M2KEqb9faqdVmsW4%2F-MB6NFMgFmqWibWX3F0n.jpg?alt=media&token=eb406381-e8ac-48ab-934f-22b8038c9c55" />
+    </div>
     <p>
       Drop image here or
       <label class="photo-editor-browse">
@@ -92,6 +96,26 @@ export default {
   height: 100%;
   overflow: hidden;
   width: 100%;
+  position: relative;
+
+  & > .photo-galery {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    overflow-y: auto;
+
+    box-shadow: inset 2px 2px 10px #000;
+
+    & > img {
+      display: block;
+      max-width: 280px;
+      width: auto;
+      height: auto;
+      margin: 10px;
+    }
+  }
 
   & > p {
     color: #999;
