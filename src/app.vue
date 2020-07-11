@@ -6,7 +6,7 @@
     </header>
     <main class="photo-editor-main">
       <editor v-if="data.loaded" ref="editor" :data="data" />
-      <loader v-else ref="loader" :data="data" />
+      <loader v-else ref="loader" :data="data" @deleteImg="deleteImg" />
     </main>
   </div>
 </template>
@@ -24,15 +24,28 @@ export default {
         name: "",
         previousUrl: "",
         type: "",
-        url: ""
+        url: "",
+        galery: [],
+        loadingGalery: false,
       },
       bindings: {}
     };
   },
-
   methods: {
     bind(action, fn) {
       this.bindings[action] = fn;
+      if (action == "getImgGalery") {
+        Object.assign(this.data, {
+          galery: [],
+          loadingGalery: true,
+        });
+        fn((err, res) => {
+          Object.assign(this.data, {
+            galery: err ? [] : res,
+            loadingGalery: false,
+          });
+        });
+      }
     },
     reset() {
       const { editor } = this.$refs;
@@ -46,6 +59,18 @@ export default {
         type,
         url
       });
+    },
+    deleteImg(url) {
+      const onDeleteImg = this.bindings["deleteImg"];
+      if (onDeleteImg) {
+        onDeleteImg(url, err => {
+          if (!err) {
+            Object.assign(this.data, {
+              galery: this.data.galery.filter(p => p.url != url),
+            });
+          }
+        });
+      }
     },
     change(action) {
       const { editor } = this.$refs;

@@ -5,12 +5,10 @@ import Vue from "vue";
 import App from "./app.vue";
 import "./components";
 
-const imgURL =
-  "https://s3-us-west-2.amazonaws.com/s.cdpn.io/9674/photo-1501366062246-723b4d3e4eb6.jpg";
-
 let options = {
   el: "#app",
-  bindings: {}
+  bindings: {
+  }
 };
 
 if (window.getPhotoEditorOptions) {
@@ -27,20 +25,6 @@ const component = app.$children[0];
 Object.keys(options.bindings).forEach(k => {
   component.bind(k, options.bindings[k]);
 });
-
-// component.setImage({
-//   type: "image/jpg",
-//   url: imgURL
-// });
-
-// fetch(imgURL)
-//   .then(r => r.blob())
-//   .then(b => {
-//     component.setImage({
-//       type: "image/jpg",
-//       url: URL.createObjectURL(b)
-//     });
-//   });
 
 if (options.globalName) {
   window[options.globalName] = component;
