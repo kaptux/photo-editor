@@ -2,8 +2,8 @@
   <div class="photo-editor-loader" @change="change" @dragover="dragover" @drop="drop">
     <div class="photo-galery">
       <div v-for="photo in data.galery">
-        <img :src="photo.url" @click="loadImg(photo.url)" />
-        <button type="button" title="Delete (Delete)" class="delete" @click="deleteImg(photo.url)"><span class="fa fa-trash"></span></button>
+        <img :src="photo.url" @click="loadImg(photo)" />
+        <button type="button" title="Delete (Delete)" class="delete" @click="deleteImg(photo)"><span class="fa fa-trash"></span></button>
       </div>
     </div>
     <div class="loader">
@@ -23,26 +23,27 @@ const URL = window.URL || window.webkitURL;
 
 export default {
   name: "Loader",
-
   props: {
     data: {
       type: Object,
       default: () => {}
     }
   },
-
   methods: {
-    deleteImg(url) {
-      this.$emit("deleteImg", url);
+    deleteImg(photo) {
+      this.$emit("deleteImg", photo);
     },
-    loadImg(url) {
+    loadImg(photo) {
       Object.assign(this.data, {
         loaded: true,
+        modified: false,
+        remoteImg: photo,
         name: "",
         type: "",
-        url
+        url: photo.url
       });
     },
+
     read(files) {
       return new Promise((resolve, reject) => {
         if (!files || files.length === 0) {
@@ -87,6 +88,7 @@ export default {
 
     drop(e) {
       e.preventDefault();
+
       this.read(e.dataTransfer.files)
         .then(data => {
           this.update(data);
@@ -102,6 +104,7 @@ export default {
       Object.assign(this.data, data);
     }
   }
+
 };
 </script>
 
@@ -131,15 +134,14 @@ export default {
     width: 250px;
     overflow-y: auto;
     overflow-x: hidden;
-
-
     box-shadow: inset 2px 2px 10px #000;
 
     &::-webkit-scrollbar {
       width: 6px;
     }
-    &::-webkit-scrollbar-track {
-    }
+
+    &::-webkit-scrollbar-track { }
+
     &::-webkit-scrollbar-thumb {
       background-color: #666;
     }
@@ -171,6 +173,8 @@ export default {
     }
   }
 }
+
+
 
 .photo-editor-sr-only {
   position: absolute;

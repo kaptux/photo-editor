@@ -27,6 +27,7 @@ export default {
         url: "",
         galery: [],
         loadingGalery: false,
+        remoteImg: null,
       },
       bindings: {}
     };
@@ -34,23 +35,26 @@ export default {
   methods: {
     bind(action, fn) {
       this.bindings[action] = fn;
-      if (action == "getImgGalery") {
-        Object.assign(this.data, {
-          galery: [],
-          loadingGalery: true,
-        });
-        fn((err, res) => {
-          Object.assign(this.data, {
-            galery: err ? [] : res,
-            loadingGalery: false,
-          });
-        });
-      }
     },
     reset() {
       const { editor } = this.$refs;
       if (editor) {
         editor.reset();
+      }
+    },
+    loadRemoteGallery() {
+      const getImgGalery = this.bindings["getImgGalery"];
+      if (getImgGalery) {
+        Object.assign(this.data, {
+          galery: [],
+          loadingGalery: true,
+        });
+        getImgGalery((err, res) => {
+          Object.assign(this.data, {
+            galery: err ? [] : res,
+            loadingGalery: false,
+          });
+        });
       }
     },
     setImage({ type, url }) {
@@ -78,7 +82,8 @@ export default {
 
       switch (action) {
         case "crop":
-          const croppedInfo = editor.crop();
+          const { remoteImg,} = this.data;
+          const croppedInfo = { ...editor.crop(), remoteImg };
           if (binding(croppedInfo)) {
             const { croppedCanvas } = croppedInfo;
             editor.update({

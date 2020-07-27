@@ -66,7 +66,8 @@ export default {
       canvasData: null,
       cropBoxData: null,
       croppedData: null,
-      cropper: null
+      cropper: null,
+      modified: false,
     };
   },
 
@@ -246,7 +247,7 @@ export default {
 
       this.cropper = new Cropper(this.$refs.image, {
         autoCrop: true,
-        autoCropArea: 1,
+        autoCropArea: 0.999,
         dragMode: "move",
         background: false,
         movable: false,
@@ -263,6 +264,12 @@ export default {
             this.canvasData = null;
             this.cropBoxData = null;
           }
+        },
+
+        cropstart: () => {
+          this.update({
+            modified: true
+          });
         },
 
         crop: ({ detail }) => {
@@ -284,6 +291,7 @@ export default {
 
     crop() {
       const { cropper, data } = this;
+      const { modified } = data;
 
       if (data.cropping) {
         this.croppedData = cropper.getData();
@@ -299,7 +307,8 @@ export default {
         this.stop();
         return {
           ...this.croppedData,
-          croppedCanvas
+          croppedCanvas,
+          modified
         };
       }
     },
@@ -317,6 +326,7 @@ export default {
       if (this.data.cropped) {
         this.update({
           cropped: false,
+          modified: false,
           previousUrl: "",
           url: this.data.previousUrl
         });
@@ -329,6 +339,7 @@ export default {
         cropped: false,
         cropping: false,
         loaded: false,
+        modified: false,
         name: "",
         previousUrl: "",
         type: "",
@@ -351,7 +362,7 @@ export default {
 .photo-editor-canvas {
   align-items: center;
   display: flex;
-  height: 100%;
+  height: 99%;
   justify-content: center;
 
   & > img {
