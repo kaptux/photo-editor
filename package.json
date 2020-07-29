@@ -26,6 +26,9 @@
   "homepage": "https://fengyuanchen.github.io/photo-editor",
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/vue-fontawesome": "^0.1.10",
     "cropperjs": "^1.5.6",
     "normalize.css": "^8.0.1",
     "vue": "^2.6.10"

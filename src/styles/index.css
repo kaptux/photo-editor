@@ -24,3 +24,8 @@ body {
   white-space: nowrap;
   width: 1px;
 }
+
+
+svg.svg-inline--fa {
+  pointer-events: none;
+}

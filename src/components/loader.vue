@@ -3,7 +3,9 @@
     <div class="photo-galery">
       <div v-for="photo in data.galery">
         <img :src="photo.url" @click="loadImg(photo)" />
-        <button type="button" title="Delete (Delete)" class="delete" @click="deleteImg(photo)"><span class="fa fa-trash"></span></button>
+        <button type="button" title="Delete (Delete)" class="delete" @click="deleteImg(photo)">
+          <font-awesome-icon icon="trash" />
+        </button>
       </div>
     </div>
     <div class="loader">

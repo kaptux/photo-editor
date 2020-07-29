@@ -5,44 +5,45 @@
     </div>
     <div v-if="cropper" class="photo-editor-toolbar" @click="click">
       <button class="photo-editor-toolbar__button" data-action="move" title="Move (M)">
-        <span class="fa fa-arrows" />
+        <font-awesome-icon icon="hand-paper" />
       </button>
       <button class="photo-editor-toolbar__button" data-action="expand" title="Crop (C)">
-        <span class="fa fa-expand" />
+        <font-awesome-icon icon="expand-alt" />
       </button>
       <button class="photo-editor-toolbar__button" data-action="zoom-in" title="Zoom In (I)">
-        <span class="fa fa-search-plus" />
+        <font-awesome-icon icon="search-plus" />
       </button>
       <button class="photo-editor-toolbar__button" data-action="zoom-out" title="Zoom Out (O)">
-        <span class="fa fa-search-minus" />
+        <font-awesome-icon icon="search-minus" />
       </button>
       <button
         class="photo-editor-toolbar__button"
         data-action="rotate-left"
         title="Rotate Left (L)"
       >
-        <span class="fa fa-rotate-left" />
+        <font-awesome-icon icon="undo" />
       </button>
       <button
         class="photo-editor-toolbar__button"
         data-action="rotate-right"
         title="Rotate Right (R)"
       >
-        <span class="fa fa-rotate-right" />
+        <font-awesome-icon icon="redo" />
       </button>
       <button
         class="photo-editor-toolbar__button"
         data-action="flip-horizontal"
         title="Flip Horizontal (H)"
       >
-        <span class="fa fa-arrows-h" />
+        <font-awesome-icon icon="arrows-alt-h" />
+      </button>
       </button>
       <button
         class="photo-editor-toolbar__button"
         data-action="flip-vertical"
         title="Flip Vertical (V)"
       >
-        <span class="fa fa-arrows-v" />
+        <font-awesome-icon icon="arrows-alt-v" />
       </button>
     </div>
   </div>
@@ -84,6 +85,12 @@ export default {
   },
 
   methods: {
+    setModified() {
+      this.update({
+        modified: true,
+      });
+    },
+
     click({ target }) {
       const { cropper } = this;
       const action =
@@ -111,14 +118,17 @@ export default {
           break;
 
         case "rotate-right":
+          this.setModified();
           cropper.rotate(90);
           break;
 
         case "flip-horizontal":
+          this.setModified();
           cropper.scaleX(-cropper.getData().scaleX || -1);
           break;
 
         case "flip-vertical":
+          this.setModified();
           cropper.scaleY(-cropper.getData().scaleY || -1);
           break;
 

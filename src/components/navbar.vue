@@ -8,7 +8,7 @@
         data-action="restore"
         title="Undo (Ctrl + Z)"
       >
-        <span class="fa fa-undo" />
+        <font-awesome-icon icon="undo" />
       </button>
       <button
         v-if="data.loaded"
@@ -17,7 +17,7 @@
         data-action="remove"
         title="Delete (Delete)"
       >
-        <span class="fa fa-trash" />
+        <font-awesome-icon icon="arrow-left" />
       </button>
       <button
         v-if="data.loaded"
@@ -26,7 +26,7 @@
         data-action="crop"
         title="OK (Enter)"
       >
-        <span class="fa fa-check" />
+        <font-awesome-icon icon="check" />
       </button>
     </nav>
   </div>

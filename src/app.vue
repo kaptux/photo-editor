@@ -1,7 +1,7 @@
 <template>
   <div class="photo-editor-app">
     <header class="photo-editor-header">
-      <span class="photo-editor-title">Photo Editor</span>
+      <span class="photo-editor-title">Image Editor</span>
       <navbar :data="data" @change="change" />
     </header>
     <main class="photo-editor-main">
@@ -114,7 +114,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .photo-editor-header {
   background-color: #666;
   height: 3rem;
